@@ -123,14 +123,6 @@ def interpret_shap():
 
     X, y, model = get_data_and_model()
 
-    # explainer = shap.TreeExplainer(model)
-    # shap_values = explainer.shap_values(X)
-    # expected_value = explainer.expected_value
-
-    # TODO что делать с разными методами интерпретатации
-    #   shap.Explainer(model, X)(X)
-    #   и shap.Explainer(model).shap_values(X)
-    # TODO разные интерпретаторы Explainer, TreeExplainer, KernelExplainer
     start = time.time()
     if plot == ShapPlot.summary_plot.value:
         explainer = shap.Explainer(model, X)
@@ -178,12 +170,10 @@ def interpret_shap():
 
 class ShapashPlot(enum.Enum):
     compacity = 'compacity'
-    # compare = 'compare'
     contribution = 'contribution'
     features_importance = 'features importance'
     local_neighbors = 'local neighbors'
     local = 'local'
-    # stability = 'stability'
     top_interactions = 'top interactions'
 
 
@@ -215,9 +205,6 @@ def interpret_shapash():
     elif plot == ShapashPlot.local.value:
         my_plot = xpl.plot.local_plot(auto_open=False, row_num=instance_number)
 
-    # elif plot == ShapashPlot.stability.value:
-    #     my_plot = xpl.plot.stability_plot(auto_open=False)  # долго
-
     elif plot == ShapashPlot.top_interactions.value:
         my_plot = xpl.plot.top_interactions_plot(auto_open=False)
 
@@ -225,8 +212,6 @@ def interpret_shapash():
 
     file_id = str(uuid.uuid4())
     my_plot.write_html(HTML_FILE_PATH + file_id + '.' + HTML_EXTENSION)
-    # xpl.plot.features_importance(auto_open=False, file_name=file_id+HTML_EXTENSION)
-    # xpl.plot.contribution_plot(1)
 
     return json.dumps({
         "time": round(end - start, 6),
@@ -238,10 +223,9 @@ def interpret_shapash():
 class DalexPlot(enum.Enum):
     permutation_feature_importance = 'permutation feature importance'
     pdp = 'pdp'
-    break_down = 'break down' # номер записи
-    shapley_values = 'shaplay values' # номер записи
-    lime = 'lime' # номер записи
-    # ceteris_paribus_profiles = 'ceteris_paribus_profiles' # номер записи; требует введения новых значений
+    break_down = 'break down'
+    shapley_values = 'shaplay values'
+    lime = 'lime'
 
 
 @app.route("/dalex", methods=["POST"])
@@ -296,12 +280,10 @@ class InterpretMLPlot(enum.Enum):
 
 @app.route("/interpretML", methods=["POST"])
 def interpret_interpret_ml():
-    #TODO добавить проверку енама
     plot = request.json.get('plot')
     instance_number = request.json.get('instance_number')
     if instance_number:
         instance_number = int(instance_number)
-    # feature_number = int(request.json.get('feature_number'))
 
     X, y, model = get_data_and_model()
 
@@ -328,7 +310,6 @@ def interpret_interpret_ml():
         if instance_number == '':
             explainer = model.explain_global()
             fig = explainer.visualize()
-            # plotly_fig = ebm_global.visualize(feature_number)
         else:
             explainer = model.explain_local(X, y)
             fig = explainer.visualize(instance_number)
@@ -381,95 +362,9 @@ def get_data_and_model():
         .drop(['len'], axis=1)
     y = df[['cardio']]
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
-
     model = joblib.load(MODEL_PATH)
 
     return X, y, model
-
-
-def form_interpetation_report(method, instance_number):
-    df = pd.read_csv(DATA_CSV_PATH)
-
-    X = df.drop(['cardio'], axis=1) \
-        .drop(['id'], axis=1) \
-        .drop(['BMI'], axis=1) \
-        .drop(['rang'], axis=1) \
-        .drop(['len'], axis=1)
-    y = df[['cardio']]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
-    X_train.columns.tolist()
-
-    model = joblib.load(MODEL_PATH)
-
-    # import shapash
-    # from shapash.utils.load_smartpredictor import load_smartpredictor
-
-    # get_interpretation_lime(model, X_train, X_test, y_train, y_test, instance_number)
-    # get_interpretation_shap(model, X, y, X_train, X_test, y_train, y_test)
-    # get_interpretation_shapash(method, X_train, X_test, y_train, y_test)
-    # get_interpretation_dalex(model, X, y, X_train, X_test, y_train, y_test)
-    get_interpretation_interpret_ml(model, X, y, X_train, X_test, y_train, y_test)
-
-
-# def get_interpretation_lime(model, X, instance_number):
-#     instance_number = int(instance_number)
-#     explainer = lime.lime_tabular.LimeTabularExplainer(
-#         X.to_numpy(),
-#         feature_names=X.columns,
-#         class_names=['0', '1'],
-#         verbose=True
-#     )
-#
-#     exp = explainer.explain_instance(X.values[instance_number], model.predict_proba)#_proba)#, num_features=20)
-#     # exp = explainer.explain_instance(X_test.values[instance_number], model.predict_proba)#, num_features=20)
-#     exp.save_to_file(TEMP_HTML_FILE_PATH)
-
-# def get_interpretation_shap(model, X, method, instance_number):
-#     explainer = shap.TreeExplainer(model)
-#     shap_values = explainer.shap_values(X)
-#     # expected_value = explainer.expected_value
-#
-#     # if (method == '')
-#     shap.summary_plot(shap_values, X, title="SHAP summary plot", show=False)
-#     plt.savefig(TEMP_HTML_FILE_PATH_PDF)
-
-def get_interpretation_shapash(model, X_train, X_test, y_train, y_test):
-    xpl = SmartExplainer()
-    xpl.compile(model=model, x=X_test)
-
-    xpl.plot.features_importance()
-    # print(xpl.plot.contribution_plot(1))
-
-    fig = px.scatter(x=range(10), y=range(10))
-    fig.write_html(HTML_FILE_PATH)
-
-
-def get_interpretation_dalex(model, X, y, X_train, X_test, y_train, y_test):
-    explainer = dx.Explainer(model, X, y)
-
-    fig = explainer.model_parts().plot(max_vars=30, show=False)
-    fig.write_html(HTML_FILE_PATH)
-
-
-def get_interpretation_interpret_ml(model, X, y, X_train, X_test, y_train, y_test):
-    ebm = ExplainableBoostingClassifier()
-    ebm.fit(X_train, y_train)
-    global_exp = ebm.explain_global()
-
-    show(global_exp)
-
-    # Generate local explanability visuals
-    ebm_local = ebm.explain_local(X, y)
-    show(ebm_local)
-
-    # Generate EDA visuals
-    hist = ClassHistogram().explain_data(X_train, y_train, name='Train Data')
-    show(hist)
-
-    # Package it all in one Dashboard , see image below
-    show([hist, ebm_local, global_exp], share_tables=True)
 
 def allowed_file(filename):
     return '.' in filename and \

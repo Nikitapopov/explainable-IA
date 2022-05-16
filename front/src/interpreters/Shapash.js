@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import APIClient, {BASE_URI} from "../apiClient";
 import TextField from "@mui/material/TextField";
 import {Autocomplete, Box, Button, LinearProgress, Modal, Typography} from "@mui/material";
 
 const plots = [
     {name: 'compacity', scale: 'global'},
-    // 'compare',// Массив записей - Нужно использовать mui multiple select chip
-    // 'contribution',// Номер или название столбца
     {name: 'features importance', scale: 'global'},
-    {name: 'local neighbors', scale: 'local'},// todo не работает
-    {name: 'local', scale: 'local'},//Индекс записи
+    {name: 'local neighbors', scale: 'local'},
+    {name: 'local', scale: 'local'},
     {name: 'top interactions', scale: 'global'},
 ]
 

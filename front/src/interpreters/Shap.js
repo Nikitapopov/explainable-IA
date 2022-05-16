@@ -9,10 +9,6 @@ const plots = [
     {name: 'waterfall', scale: 'local'},
     {name: 'scatter', scale: 'local'},
     {name: 'force', scale: 'local'},
-    // 'heatmap',
-    // 'text',
-    // 'image',
-    // 'partial_dependence'
 ]
 
 function Shap({isLoadingInstanceCount, instanceCount}) {
@@ -26,7 +22,6 @@ function Shap({isLoadingInstanceCount, instanceCount}) {
     const [inputValue, setInputValue] = useState('')
 
     function handleOnClick() {
-        // todo add check instance number not extend borders
         setIsModelOpen(true)
         setIsInterpretationInProcess(true)
         new APIClient().interpretShap(plot, currInstance)

@@ -11,7 +11,6 @@ function Lime({isLoadingInstanceCount, instanceCount}) {
     const [interpretationResult, setInterpretationResult] = useState({time: null, token: null, extension: null});
 
     function handleOnClick() {
-        // todo add check instance number not extend borders
         setIsModelOpen(true)
         setIsInterpretationInProcess(true)
         new APIClient().interpretLime(currInstance)
@@ -88,32 +87,6 @@ function Lime({isLoadingInstanceCount, instanceCount}) {
                     }
                 </Box>
             </Modal>
-            {/*<Autocomplete*/}
-            {/*    value={currInstance}*/}
-            {/*    onChange={(event, newValue) => {*/}
-            {/*        setCurrInstance(newValue);*/}
-            {/*    }}*/}
-            {/*    id="controllable-states-demo"*/}
-            {/*    disablePortal*/}
-            {/*    options={[...Array(parseInt(instanceCount)).keys()]}*/}
-            {/*    sx={{width: 300}}*/}
-            {/*    renderInput={(params) => (*/}
-            {/*        <TextField*/}
-            {/*            {...params}*/}
-            {/*            label="Экземпляр"*/}
-            {/*            InputProps={{*/}
-            {/*                ...params.InputProps,*/}
-            {/*                endAdornment: (*/}
-            {/*                    <React.Fragment>*/}
-            {/*                        {isLoadingInstanceCount ? <CircularProgress color="inherit" size={20} /> : null}*/}
-            {/*                        {params.InputProps.endAdornment}*/}
-            {/*                    </React.Fragment>*/}
-            {/*                ),*/}
-            {/*            }}*/}
-            {/*        />*/}
-            {/*    )}*/}
-            {/*    loading={isLoadingInstanceCount}*/}
-            {/*/>*/}
         </Box>
     );
 }

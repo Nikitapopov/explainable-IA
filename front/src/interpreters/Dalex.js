@@ -5,11 +5,9 @@ import {Autocomplete, Box, Button, LinearProgress, Modal, Typography} from "@mui
 
 const plots = [
     {name: 'permutation feature importance', scale: 'global'},
-    // 'compare',// Массив записей - Нужно использовать mui multiple select chip
-    // 'contribution',// Номер или название столбца
     {name: 'pdp', scale: 'global'},
-    {name: 'break down', scale: 'local'},//Индекс записи
-    {name: 'shapley values', scale: 'local'},//Индекс записи
+    {name: 'break down', scale: 'local'},
+    {name: 'shapley values', scale: 'local'},
     {name: 'lime', scale: 'local'},
 ]
 

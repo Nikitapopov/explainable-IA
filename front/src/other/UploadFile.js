@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import APIClient from "../apiClient";
-import {Box, Button, LinearProgress, Typography} from "@mui/material";
+import {Box, LinearProgress, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 
 export function UploadFile({btnText, btnTextNew, fileUploadUrl, checkDownloaded}) {

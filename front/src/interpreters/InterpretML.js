@@ -25,7 +25,6 @@ function InterpretML({isLoadingInstanceCount, instanceCount}) {
     const [inputValue, setInputValue] = useState('')
 
     function handleOnClick() {
-        // todo add check instance number not extend borders
         setIsModelOpen(true)
         setIsInterpretationInProcess(true)
         new APIClient().interpretInterpretMl(plot, currInstance)
