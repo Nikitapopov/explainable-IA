@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+marshmallow = "==2.16.3"
+flask-oidc = "==1.4.0"
+Flask-Cors = "==3.0.7"
+itsdangerous = "==2.0.1"
+pandas = "==1.4.2"
+plotly = "*"
+shapash = "==1.6.0"
+scikit-learn = "==1.0.2"
+werkzeug = "==2.0.3"
+xgboost = "==1.4.2"
+flask = "*"
+jinja2 = "*"
+lime = "*"
+kaleido = "*"
+interpret = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
